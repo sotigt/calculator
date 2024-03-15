@@ -11,8 +11,9 @@
     --calculatorScreenText: #ffffff; 
     --buttonBackground: #D9D9D9;
     --buttonBackground: #f8d7e7;
-    --buttonBackgroundHover: #f8d7e7d7; 
+    --buttonBackgroundHover: #facae1e1; 
     --buttonBackgroundActive: rgba(245, 163, 203, 0.725);
+    --buttonDarkBackgroundHover: #ce6c9bb9;
 
 
     --borderRadiusBig: 20px;
@@ -97,14 +98,28 @@ main {
 
                 & .button:hover {
                     background-color: var(--buttonBackgroundHover);
-
+                    transition: background-color 1s ease-out;
                 }
 
                 & .button:active {
                     background-color: var(--buttonBackgroundActive);
 
                 }
-            
+
+                & .darkButtons {
+                    background-color: var(--buttonBackgroundActive);
+
+                }
+
+                & .darkButtons:hover {
+                    background-color: var(--buttonDarkBackgroundHover);
+                    transition: background-color 1s ease-out;
+                }
+                
+                & .operatorButtonActive {
+                    background-color: var(--buttonDarkBackgroundHover);
+                    
+                }
             }
 
         }
