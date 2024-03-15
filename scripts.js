@@ -1,1 +1,1 @@
-console.log("hello world");
+const display = document.querySelector('.display');
