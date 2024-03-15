@@ -59,7 +59,15 @@ function multiply () {
 }
 
 function divide () {
-    return display.innerText = sum = addedNumbers.reduce((total, currentNumber) => total / currentNumber);
+    sum = addedNumbers.reduce((total, currentNumber) => total / currentNumber);
+
+    addedNumbers.map((number, index) => {
+        if(number === 0 && index > 0) {
+            return sum = "nice try babe";
+        }
+    }) 
+
+    return display.innerText = sum;
 }
 
 function removeClass () {
@@ -70,6 +78,8 @@ function removeClass () {
 
 function operate () {
     if(!currentOperator) return display.innerText = sum;
+
+    if(!addedNumbers.length) return;
 
     switch(currentOperator) {
         case "add":
