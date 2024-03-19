@@ -1,35 +1,58 @@
 let sum = 0;
-let addedNumbers = [];
-let currentOperator; 
+let a = null;
+let b = null;
+let displaySum = false; 
+let currentOperator;  /* stores the current operator */
 
 const display = document.querySelector('.display');
 display.innerText = sum;
 
 /*---- Operator buttons ----*/
 let operatorBtns = Array.from(document.querySelectorAll('.operatorButton'));
-operatorBtns.map((op) => {
-    op.addEventListener('click', () => {
-        if(currentOperator) removeClass();
-
-        op.classList.add("operatorButtonActive");
-        currentOperator = op.id;
-    });
+operatorBtns.map((operator) => {
+    operator.addEventListener('click', () => useOperatorButton(operator))
 });
+
+function useOperatorButton (operator) {
+    if(a === null) return;
+
+    if(currentOperator) removeClass();
+
+    if(a && b && currentOperator) operate();
+
+    operator.classList.add("operatorButtonActive");
+    currentOperator = operator.id;
+    console.log(`a: ${a}, b: ${b}, currentOperator: ${currentOperator}`);
+
+}
 
 /*---- Number buttons ----*/
 let numBtns = document.querySelectorAll('.numButton');
 Array.from(numBtns).map((number) => {
-    number.addEventListener('click', () => {
-        if(currentOperator) {
-            removeClass();  
-        }   
-
-        addedNumbers.push(Number(number.id));
-        
-        display.innerText = number.id;
-    });
+    number.addEventListener('click', () => useNumberButton(number.id)) 
 });
 
+function useNumberButton (number) {
+    if(currentOperator) {
+        removeClass();  
+    }   
+
+    if(!currentOperator) {
+        if(displaySum) {
+            displaySum = false; 
+            a = number;
+        } else {
+            a = !a ? number : a + number;
+        }
+        display.innerText = a;
+    } else if(a && currentOperator) {
+        b = !b ? number : b + number;
+        display.innerText = b;
+    }
+
+    console.log(`a: ${a}, b: ${b}, currentOperator: ${currentOperator}`);
+
+}
 
 const sumBtn = document.querySelector('#sum');
 sumBtn.addEventListener('click', () => operate());
@@ -37,37 +60,37 @@ sumBtn.addEventListener('click', () => operate());
 const clearBtn = document.querySelector('#clear');
 clearBtn.addEventListener('click', () => {
     sum = 0;
-    addedNumbers = [];
-    currentOperator;
+    currentOperator = null;
+    a = null;
+    b = null;
 
     if(currentOperator) removeClass();
+
+    console.log(`a: ${a}, b: ${b}, currentOperator: ${currentOperator}`);
 
     return display.innerText = sum;
 });
 
 
 function add () {
-    return display.innerText = sum = addedNumbers.reduce((total, currentNumber) => total + currentNumber);
+    return sum = Number(a) + Number(b);
 }
 
 function subtract () {
-    return display.innerText = sum = addedNumbers.reduce((total, currentNumber) => total - currentNumber);
+    return sum = Number(a) - Number(b);
 }
 
 function multiply () {
-    return display.innerText = sum = addedNumbers.reduce((total, currentNumber) => total * currentNumber);
+    return sum = Number(a) * Number(b);
 }
 
 function divide () {
-    sum = addedNumbers.reduce((total, currentNumber) => total / currentNumber);
 
-    addedNumbers.map((number, index) => {
-        if(number === 0 && index > 0) {
-            return sum = "nice try babe";
-        }
-    }) 
-
-    return display.innerText = sum;
+    if (a == 0) {
+        return sum = "nice try babe";
+    } else {
+        return sum = Number(a) / Number(b); 
+    }  
 }
 
 function removeClass () {
@@ -77,9 +100,18 @@ function removeClass () {
 }
 
 function operate () {
-    if(!currentOperator) return display.innerText = sum;
+    console.log(`a: ${a}, b: ${b}, currentOperator: ${currentOperator}`);
 
-    if(!addedNumbers.length) return;
+    if(!currentOperator) {
+        console.log("missing an operator")
+        removeClass();
+        currentOperator = null;
+        return;
+    }
+
+    if(!b) {
+        b = a;
+    }
 
     switch(currentOperator) {
         case "add":
@@ -98,9 +130,14 @@ function operate () {
 
     if(currentOperator) removeClass();
 
-    sum = 0;
-    addedNumbers = [];
-    currentOperator;
+    a = sum;
+    b = null;
+    currentOperator = null;
+
+    displaySum = true;
+
+    return display.innerText = sum;
+
 
 }
 
